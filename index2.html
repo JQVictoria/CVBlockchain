@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blockchain Simulator - Versi Gabungan</title>
+  <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+  <div class="navbar">
+    <button id="tab-home" class="active">Home</button>
+    <button id="tab-about">About Me</button>
+    <button id="tab-hash">Hash</button>
+    <button id="tab-block">Block</button>
+    <button id="tab-chain">Block Chain</button>
+    <button id="tab-dashboard">Dashboard</button>
+  </div>
+
+  <div id="page-home" class="page active">
+    <div class="hero-banner">
+      <h1>Selamat datang di Website Belajar Blockchain</h1>
+      <p>Simulasi interaktif untuk memahami konsep dasar teknologi blockchain.</p>
+    </div>
+    <div id="datetime"></div>
+    
+    <div class="home-grid">
+      <div class="content-card">
+        <img src="https://tradersunion.com/uploads/articles/215465/illustration-of-blockchain-technology.jpeg" alt="Petunjuk Penggunaan" class="card-image">
+        <h3>Petunjuk Penggunaan</h3>
+        <p>Website ini dirancang untuk membantu memahami konsep dan simulasi berbagai teknik dalam **Blockchain Technology**. Ikuti langkah-langkah berikut:</p>
+        <ul>
+          <li>Klik pada bagian **Menu Bar** di bagian atas untuk memilih simulasi atau fitur yang ingin dipelajari.</li>
+          <li>Menu Bar yang tersedia:
+            <ol>
+              <li><strong>Home:</strong> Tampilan awal Website.</li>
+              <li><strong>About Me:</strong> Profil pembuat Website.</li>
+              <li><strong>Hash:</strong> Masukkan input teks, hasil SHA-256 akan muncul otomatis.</li>
+              <li><strong>Block:</strong> Simulasi proses mining sebuah block tunggal.</li>
+              <li><strong>Block Chain:</strong> Simulasi membuat rantai block yang saling terhubung.</li>
+              <li><strong>Dashboard:</strong> Melihat statistik dari simulasi di tab Block Chain.</li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+
+      <div class="content-card accent">
+        <img src="https://images7.alphacoders.com/123/1239294.jpg" alt="Ilustrasi Blockchain" class="card-image">
+        <h3>Apa itu Blockchain?</h3>
+        <p><strong>Blockchain</strong> (rantai blok) adalah teknologi buku besar terdistribusi (Distributed Ledger Technology) yang mencatat transaksi secara permanen dan tidak dapat diubah (immutable).</p>
+        <p>Setiap "blok" berisi sejumlah transaksi, dan setiap blok baru terhubung dengan blok sebelumnya menggunakan hash. Inilah yang membuatnya aman, karena untuk mengubah satu blok, Anda harus mengubah semua blok setelahnya.</p>
+        <p>Website ini akan mensimulasikan properti utama tersebut, terutama pada menu <strong>Hash</strong>, <strong>Block</strong>, dan <strong>Block Chain</strong>.</p>
+      </div>
+    </div>
+    
+    <h2 class="section-title">Modul Simulasi Interaktif</h2>
+    <div class="module-grid">
+      <a class="module-card" id="goto-hash">
+        <h4>🔗 Hash</h4>
+        <p>Pahami fungsi hash kriptografi (SHA-256) dan bagaimana data diubah menjadi sidik digital yang unik.</p>
+      </a>
+      <a class="module-card" id="goto-block">
+        <h4>🧱 Block</h4>
+        <p>Pelajari struktur dasar blok, termasuk data, nonce, dan proses 'mining' untuk menemukan hash yang valid.</p>
+      </a>
+      <a class="module-card" id="goto-chain">
+        <h4>⛓️ Block Chain</h4>
+        <p>Rangkai beberapa blok secara berurutan dan pahami bagaimana hash dari blok sebelumnya mengamankan rantai.</p>
+      </a>
+      <a class="module-card" id="goto-dashboard">
+        <h4>📊 Dashboard</h4>
+        <p>Lihat statistik real-time dari simulasi blockchain Anda, termasuk total blok dan validitas rantai.</p>
+      </a>
+    </div>
+    </div>
+
+  <div id="page-about" class="page">
+    <h2>About Me</h2>
+    <div class="about-container">
+      <div class="profile-info">
+        <img src="fotocv.png" alt="Foto Profil Muzaqi Indra Al Azhar" class="profile-pic"> 
+        <h3>Muzaqi Indra Al Azhar</h3>
+        <p>
+          Mahasiswa Teknologi Rekayasa Multimedia di Politeknik Elektronika Negeri Surabaya (PENS). 
+          Sangat bersemangat di bidang Desain Grafis dan Desain UI/UX. 
+          Terampil dalam menggunakan berbagai perangkat lunak desain dan mampu bekerja secara efektif baik mandiri maupun dalam tim.
+        </p>
+      </div>
+      <div class="profile-details">
+        <h4>Keahlian</h4>
+        <ul>
+          <li><strong>Keahlian Software:</strong> Adobe Photoshop, Figma, Adobe Illustrator, CorelDRAW, Adobe After Effects.</li>
+          <li><strong>Keahlian Lainnya:</strong> Desain Grafis, Digital Printing, Operasi Mesin Cetak DTF, Kerja Tim, Komunikasi Visual.</li>
+        </ul>
+        <h4>Pendidikan</h4>
+        <ol>
+          <li><strong>Politeknik Elektronika Negeri Surabaya (PENS)</strong> (2023 - Sekarang)<br>Jurusan: Teknologi Rekayasa Multimedia.</li>
+          <li><strong>SMK Negeri 2 Buduran</strong> (2020 - 2023)<br>Jurusan: Multimedia.</li>
+        </ol>
+      </div>
+    </div>
+    <hr class="divider">
+    <h3>Kontak</h3>
+    <div class="contact-grid">
+      <div class="map-container">
+        <p><strong>Lokasi Kampus:</strong></p>
+        <p><strong>Politeknik Elektronika Negeri Surabaya</strong><br>
+        Jl. Raya ITS, Keputih, Kec. Sukolilo, Surabaya, Jawa Timur 60111</p>
+        
+        <iframe 
+          class="map-iframe"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.6921781667456!2d112.79118257460958!3d-7.275824292731301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fa10ea2ae883%3A0xbe22c55d60ef09c7!2sPoliteknik%20Elektronika%20Negeri%20Surabaya!5e0!3m2!1sid!2sid!4v1763191315747!5m2!1sid!2sid" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        
+      </div>
+      <div class="form-container">
+        <h4>Hubungi Saya</h4>
+        <form>
+          <label for="nama">Nama</label>
+          <input type="text" id="nama" placeholder="Nama Anda">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Email Anda (Contoh: muzaqiindra2016@gmail.com)">
+          <label for="telepon">Nomor Telepon</label>
+          <input type="text" id="telepon" placeholder="Nomor HP (Contoh: +62 85157150046)">
+          <label for="pesan">Pesan</label>
+          <textarea id="pesan" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
+          <button type="submit" class="mine">Kirim Pesan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-hash" class="page">
+    <h2>Hash Generator</h2>
+    <label for="hash-input">Text Input:</label>
+    <textarea id="hash-input" rows="4"></textarea>
+    <label>SHA-256 Hash:</label>
+    <div id="hash-output" class="output"></div>
+  </div>
+
+  <div id="page-block" class="page">
+    <h2>Single Block</h2>
+    <label for="block-number"># (Nomor Block):</label>
+    <input id="block-number" type="number" min="0" value="0" />
+    <label for="block-data">Data:</label>
+    <textarea id="block-data" rows="4"></textarea>
+    <label for="block-nonce">Nonce:</label>
+    <input id="block-nonce" type="text" maxlength="9" />
+    <label for="block-timestamp">Timestamp:</label>
+    <input id="block-timestamp" type="text" readonly />
+    <label>Hash:</label>
+    <div id="block-hash" class="output"></div>
+    <button id="btn-mine" class="mine">Mine</button>
+    <label for="speed-control">Kecepatan Mining:</label>
+    <select id="speed-control">
+      <option value="1">Normal</option>
+      <option value="10">10x Lebih Cepat</option>
+      <option value="50">50x Lebih Cepat</option>
+    </select>
+    <div id="mining-status" class="status"></div>
+  </div>
+
+  <div id="page-chain" class="page">
+    <h2>Blockchain</h2>
+    <div id="blockchain"></div>
+    <button id="btn-add-block">Add Block</button>
+  </div>
+  
+  <div id="page-dashboard" class="page">
+    <h2>Dashboard Simulasi</h2>
+    <p>Statistik ini diambil langsung dari simulasi lokal di tab "Block Chain".</p>
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h4>Total Blok</h4>
+        <div id="db-total-blocks">0</div>
+      </div>
+      <div class="dashboard-card">
+        <h4>Validitas Rantai</h4>
+        <div id="db-chain-valid">...</div>
+      </div>
+      <div class="dashboard-card">
+        <h4>Difficulty</h4>
+        <div id="db-difficulty">...</div>
+      </div>
+      <div class="dashboard-card wide">
+        <h4>Hash Blok Terakhir</h4>
+        <div id="db-last-hash" class="output-small">...</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <img src="logopens.png" alt="Logo PENS" class="footer-logo"> 
+    <div class="footer-contact">
+      <p>Email: muzaqiindra2016@gmail.com</p>
+      <p>Phone: +62 85157150046</p>
+    </div>
+  </footer>
+
+  <script src="app2.js"></script>
+</body>
+</html>
