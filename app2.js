@@ -46,7 +46,6 @@ function showPage(pageId) {
     .getElementById("tab-" + pageId.split("-")[1])
     .classList.add("active");
     
-  // Panggil update dashboard saat tab-nya diklik
   if (pageId === "page-dashboard") {
     updateDashboard();
   }
@@ -57,13 +56,14 @@ document.getElementById("tab-hash").onclick = () => showPage("page-hash");
 document.getElementById("tab-block").onclick = () => showPage("page-block");
 document.getElementById("tab-chain").onclick = () => showPage("page-chain");
 document.getElementById("tab-dashboard").onclick = () => showPage("page-dashboard");
+document.getElementById("tab-consensus").onclick = () => showPage("page-consensus");
 
-// ▼▼▼ TAMBAHAN BARU UNTUK CARD MODUL ▼▼▼
+// Links di Home (TAMBAHAN goto-consensus)
 document.getElementById("goto-hash").onclick = () => showPage("page-hash");
 document.getElementById("goto-block").onclick = () => showPage("page-block");
 document.getElementById("goto-chain").onclick = () => showPage("page-chain");
 document.getElementById("goto-dashboard").onclick = () => showPage("page-dashboard");
-// ▲▲▲ BATAS TAMBAHAN ▲▲▲
+document.getElementById("goto-consensus").onclick = () => showPage("page-consensus"); // <-- TAMBAHAN
 
 // --- Hash Page ---
 document.getElementById("hash-input").addEventListener("input", async (e) => {
@@ -113,7 +113,7 @@ document.getElementById("btn-mine").addEventListener("click", async () => {
   blockNonce.value = "0";
   let nonce = 0;
   mining = true;
-  const difficulty = "0000"; // Ini difficulty untuk single block
+  const difficulty = "0000";
   const baseBatch = 1000;
   const speedMultiplier = parseInt(speedControl.value);
   const batchSize = baseBatch * speedMultiplier;
@@ -145,9 +145,9 @@ document.getElementById("btn-mine").addEventListener("click", async () => {
 });
 
 // --- Blockchain Page ---
-const gDifficulty = "0000"; // Definisikan difficulty secara global untuk chain
+const gDifficulty = "0000";
 const ZERO_HASH = "0".repeat(64);
-let blocks = []; // Ini adalah "Database" simulasi kita
+let blocks = [];
 const chainDiv = document.getElementById("blockchain");
 
 function renderChain() {
@@ -171,24 +171,18 @@ function renderChain() {
 <div id="status-${i}" class="status"></div>
 `;
     chainDiv.appendChild(div);
-    
-    // Listener untuk data diubah -> invalidate block
     document.getElementById(`data-${i}`).addEventListener("input", (e) => {
       blocks[i].data = e.target.value;
-      blocks[i].hash = ""; // Invalidate block
+      blocks[i].hash = "";
       blocks[i].timestamp = "";
       blocks[i].nonce = 0;
       document.getElementById(`hash-${i}`).textContent = "";
-      updateDashboard(); // Perbarui dashboard jika data diubah
+      updateDashboard();
     });
-    
-    // Listener tombol mine
     document.getElementById(`mine-${i}`).addEventListener("click", () => {
       mineChainBlock(i);
     });
   });
-  
-  // Kunci field data jika block sudah valid
   blocks.forEach((blk, i) => {
     if (blk.hash && blk.hash.startsWith(gDifficulty)) {
       const dataField = document.getElementById(`data-${i}`);
@@ -210,7 +204,7 @@ function addChainBlock() {
   };
   blocks.push(blk);
   renderChain();
-  updateDashboard(); // Update dashboard saat blok baru ditambah
+  updateDashboard();
   chainDiv.scrollLeft = chainDiv.scrollWidth;
 }
 
@@ -229,7 +223,7 @@ async function mineChainBlock(i) {
   timeDiv.textContent = blk.timestamp;
   hashDiv.textContent = "";
   statusDiv.textContent = "Mining dimulai...";
-  const difficulty = gDifficulty; // Pakai global difficulty
+  const difficulty = gDifficulty;
   const baseBatch = 1000;
   const batchSize = baseBatch * 10;
   const startTime = performance.now();
@@ -243,12 +237,11 @@ async function mineChainBlock(i) {
         document.getElementById(`data-${i}`).readOnly = true;
         const durasi = ((performance.now() - startTime) / 1000).toFixed(2);
         statusDiv.textContent = `Selesai! Nonce: ${blk.nonce}, waktu: ${durasi} detik.`;
-        // Update previous hash di blok selanjutnya JIKA ada
         if (blocks[i + 1]) {
           blocks[i + 1].previousHash = blk.hash;
-          renderChain(); // Render ulang untuk update prev hash
+          renderChain();
         }
-        updateDashboard(); // Update dashboard saat mining selesai
+        updateDashboard();
         return true;
       }
       blk.nonce++;
@@ -266,27 +259,14 @@ async function mineChainBlock(i) {
 
 // --- Simulation Dashboard Page ---
 function checkChainValidity() {
-  if (blocks.length === 0) return true; // Rantai kosong dianggap valid
-  
+  if (blocks.length === 0) return true;
   for (let i = 1; i < blocks.length; i++) {
     const currentBlock = blocks[i];
     const previousBlock = blocks[i-1];
-    
-    // Cek 1: Hash block sebelumnya tidak cocok
-    if (currentBlock.previousHash !== previousBlock.hash) {
-      return false;
-    }
-    // Cek 2: Hash block ini tidak valid (belum di-mine)
-    if (!currentBlock.hash.startsWith(gDifficulty)) {
-      return false;
-    }
+    if (currentBlock.previousHash !== previousBlock.hash) return false;
+    if (!currentBlock.hash.startsWith(gDifficulty)) return false;
   }
-  
-  // Cek block genesis (block #0)
-  if (!blocks[0].hash || !blocks[0].hash.startsWith(gDifficulty)) {
-    return false;
-  }
-  
+  if (!blocks[0].hash || !blocks[0].hash.startsWith(gDifficulty)) return false;
   return true;
 }
 
@@ -294,24 +274,208 @@ function updateDashboard() {
   const totalBlocks = blocks.length;
   const lastBlock = totalBlocks > 0 ? blocks[blocks.length - 1] : null;
   const isValid = checkChainValidity();
-  
   document.getElementById("db-total-blocks").textContent = totalBlocks;
-  
   const hashText = lastBlock && lastBlock.hash ? lastBlock.hash : (totalBlocks > 0 ? "N/A (Blok terakhir belum di-mine)" : "N/A");
   document.getElementById("db-last-hash").textContent = hashText;
-  
   const validDiv = document.getElementById("db-chain-valid");
   if (isValid) {
     validDiv.textContent = "✅ Rantai Valid";
-    validDiv.className = "valid"; // Tambah class untuk styling
+    validDiv.className = "valid";
   } else {
     validDiv.textContent = "❌ Rantai Tidak Valid!";
-    validDiv.className = "invalid"; // Tambah class untuk styling
+    validDiv.className = "invalid";
   }
-  
   document.getElementById("db-difficulty").textContent = gDifficulty;
 }
 
-// --- Init ---
 document.getElementById("btn-add-block").onclick = addChainBlock;
-addChainBlock(); // Mulai dengan 1 blok
+addChainBlock();
+
+// ================== KONSENSUS LOGIC ==================
+let balances = { A: 100, B: 100, C: 100 };
+let txPool = [];
+let chainsConsensus = { A: [], B: [], C: [] };
+
+function updateBalancesDOM() {
+  ["A", "B", "C"].forEach((u) => {
+    const el = document.getElementById("saldo-" + u);
+    if (el) el.textContent = balances[u];
+  });
+}
+
+function parseTx(line) {
+  const m = line.match(/^([A-C])\s*->\s*([A-C])\s*:\s*(\d+)$/);
+  if (!m) return null;
+  return { from: m[1], to: m[2], amt: parseInt(m[3]) };
+}
+
+async function shaMine(prev, data, timestamp) {
+  const diff = "000";
+  const base = 1000;
+  const batch = base * 50;
+  return new Promise((resolve) => {
+    let nonce = 0;
+    async function loop() {
+      const promises = [];
+      for (let i = 0; i < batch; i++)
+        promises.push(sha256(prev + data + timestamp + (nonce + i)));
+      const results = await Promise.all(promises);
+      for (let i = 0; i < results.length; i++) {
+        const h = results[i];
+        if (h.startsWith(diff)) {
+          resolve({ nonce: nonce + i, hash: h });
+          return;
+        }
+      }
+      nonce += batch;
+      setTimeout(loop, 0);
+    }
+    loop();
+  });
+}
+
+async function createGenesisConsensus() {
+  const diff = "000";
+  const ts = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+  for (let u of ["A", "B", "C"]) {
+    let nonce = 0;
+    let found = "";
+    while (true) {
+      const h = await sha256(ZERO_HASH + "Genesis" + ts + nonce);
+      if (h.startsWith(diff)) {
+        found = h;
+        break;
+      }
+      nonce++;
+    }
+    chainsConsensus[u] = [
+      {
+        index: 0,
+        prev: ZERO_HASH,
+        data: "Genesis Block: 100 coins",
+        timestamp: ts,
+        nonce,
+        hash: found,
+        invalid: false,
+      },
+    ];
+  }
+  renderConsensusChains();
+  updateBalancesDOM();
+}
+createGenesisConsensus();
+
+function renderConsensusChains() {
+  ["A", "B", "C"].forEach((u) => {
+    const cont = document.getElementById("chain-" + u);
+    cont.innerHTML = "";
+    chainsConsensus[u].forEach((blk, i) => {
+      const d = document.createElement("div");
+      d.className = "chain-block" + (blk.invalid ? " invalid" : "");
+      d.innerHTML = `
+        <div class="small"><strong>Block #${blk.index}</strong></div>
+        <div class="small">Prev:</div><input class="small" value="${blk.prev.substring(0, 20)}..." readonly>
+        <div class="small">Data:</div><textarea class="data" rows="3">${blk.data}</textarea>
+        <div class="small">Timestamp:</div><input class="small" value="${blk.timestamp}" readonly>
+        <div class="small">Nonce:</div><input class="small" value="${blk.nonce}" readonly>
+        <div class="small">Hash:</div><input class="small" value="${blk.hash.substring(0, 20)}..." readonly>`;
+      
+      const ta = d.querySelector("textarea.data");
+      ta.addEventListener("input", (e) => {
+        chainsConsensus[u][i].data = e.target.value;
+      });
+      cont.appendChild(d);
+    });
+  });
+}
+
+["A", "B", "C"].forEach((u) => {
+  document.getElementById("send-" + u).onclick = () => {
+    const amt = parseInt(document.getElementById("amount-" + u).value);
+    const to = document.getElementById("receiver-" + u).value;
+    if (u === to) { alert("Tidak bisa kirim ke diri sendiri"); return; }
+    if (amt <= 0) { alert("Jumlah harus > 0"); return; }
+    if (balances[u] < amt) { alert("Saldo tidak cukup!"); return; }
+    
+    balances[u] -= amt;
+    balances[to] += amt;
+    updateBalancesDOM();
+
+    const tx = `${u} -> ${to} : ${amt}`;
+    txPool.push(tx);
+    document.getElementById("mempool").value = txPool.join("\n");
+  };
+});
+
+document.getElementById("btn-mine-all").onclick = async () => {
+  if (txPool.length === 0) {
+    alert("Tidak ada transaksi.");
+    return;
+  }
+  const ts = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+  const data = txPool.join(" | ");
+  
+  const miningTasks = ["A", "B", "C"].map(async (u) => {
+    const prev = chainsConsensus[u].at(-1).hash;
+    const result = await shaMine(prev, data, ts);
+    chainsConsensus[u].push({
+      index: chainsConsensus[u].length,
+      prev,
+      data,
+      timestamp: ts,
+      nonce: result.nonce,
+      hash: result.hash,
+      invalid: false,
+    });
+  });
+
+  await Promise.all(miningTasks);
+  txPool = [];
+  document.getElementById("mempool").value = "";
+  renderConsensusChains();
+  alert("Mining Selesai!");
+};
+
+document.getElementById("btn-verify-consensus").onclick = async () => {
+  try {
+    for (const u of ["A", "B", "C"]) {
+      for (let i = 1; i < chainsConsensus[u].length; i++) {
+        const blk = chainsConsensus[u][i];
+        const expectedPrev = chainsConsensus[u][i - 1].hash;
+        const recomputed = await sha256(blk.prev + blk.data + blk.timestamp + blk.nonce);
+        blk.invalid = (recomputed !== blk.hash) || (blk.prev !== expectedPrev);
+      }
+    }
+    renderConsensusChains();
+    alert("Verifikasi Selesai. Blok invalid ditandai MERAH.");
+  } catch (err) { console.error(err); }
+};
+
+document.getElementById("btn-consensus").onclick = async () => {
+  try {
+    const len = chainsConsensus.A.length; 
+    for (let i = 0; i < len; i++) {
+      const datas = [chainsConsensus.A[i].data, chainsConsensus.B[i].data, chainsConsensus.C[i].data];
+      const frequency = {}; 
+      let maxFreq = 0; 
+      let majorityData = datas[0];
+
+      datas.forEach(d => {
+        frequency[d] = (frequency[d] || 0) + 1;
+        if (frequency[d] > maxFreq) { maxFreq = frequency[d]; majorityData = d; }
+      });
+
+      for (const u of ["A", "B", "C"]) {
+        const blk = chainsConsensus[u][i];
+        if (blk.data !== majorityData) {
+          blk.data = majorityData;
+          blk.prev = (i === 0) ? ZERO_HASH : chainsConsensus[u][i-1].hash;
+          blk.hash = await sha256(blk.prev + blk.data + blk.timestamp + blk.nonce);
+        }
+        blk.invalid = false;
+      }
+    }
+    renderConsensusChains();
+    alert("Konsensus Tercapai!");
+  } catch (e) { console.error(e); }
+};
