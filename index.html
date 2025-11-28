@@ -13,6 +13,7 @@
     <button id="tab-block">Block</button>
     <button id="tab-chain">Block Chain</button>
     <button id="tab-dashboard">Dashboard</button>
+    <button id="tab-consensus">Konsensus</button>
   </div>
 
   <div id="page-home" class="page active">
@@ -37,6 +38,7 @@
               <li><strong>Block:</strong> Simulasi proses mining sebuah block tunggal.</li>
               <li><strong>Block Chain:</strong> Simulasi membuat rantai block yang saling terhubung.</li>
               <li><strong>Dashboard:</strong> Melihat statistik dari simulasi di tab Block Chain.</li>
+              <li><strong>Konsensus:</strong> Simulasi jaringan terdistribusi antar node.</li>
             </ol>
           </li>
         </ul>
@@ -69,8 +71,12 @@
         <h4>📊 Dashboard</h4>
         <p>Lihat statistik real-time dari simulasi blockchain Anda, termasuk total blok dan validitas rantai.</p>
       </a>
+      <a class="module-card" id="goto-consensus">
+        <h4>🤝 Konsensus</h4>
+        <p>Simulasi mekanisme konsensus terdistribusi antar node untuk mencapai kesepakatan data yang valid.</p>
+      </a>
     </div>
-    </div>
+  </div>
 
   <div id="page-about" class="page">
     <h2>About Me</h2>
@@ -187,6 +193,72 @@
         <h4>Hash Blok Terakhir</h4>
         <div id="db-last-hash" class="output-small">...</div>
       </div>
+    </div>
+  </div>
+
+  <div id="page-consensus" class="page">
+    <h2>Simulasi Konsensus</h2>
+    
+    <div class="wallets">
+      <div class="wallet" data-user="A">
+        <h3>User A</h3>
+        <div>Saldo: <span id="saldo-A">100</span></div>
+        <label>Penerima:</label>
+        <select id="receiver-A">
+          <option value="B">User B</option>
+          <option value="C">User C</option>
+        </select>
+        <label>Jumlah:</label>
+        <input id="amount-A" type="number" min="1" value="10" />
+        <button id="send-A">Kirim</button>
+      </div>
+
+      <div class="wallet" data-user="B">
+        <h3>User B</h3>
+        <div>Saldo: <span id="saldo-B">100</span></div>
+        <label>Penerima:</label>
+        <select id="receiver-B">
+          <option value="A">User A</option>
+          <option value="C">User C</option>
+        </select>
+        <label>Jumlah:</label>
+        <input id="amount-B" type="number" min="1" value="10" />
+        <button id="send-B">Kirim</button>
+      </div>
+
+      <div class="wallet" data-user="C">
+        <h3>User C</h3>
+        <div>Saldo: <span id="saldo-C">100</span></div>
+        <label>Penerima:</label>
+        <select id="receiver-C">
+          <option value="A">User A</option>
+          <option value="B">User B</option>
+        </select>
+        <label>Jumlah:</label>
+        <input id="amount-C" type="number" min="1" value="10" />
+        <button id="send-C">Kirim</button>
+      </div>
+    </div>
+
+    <div style="margin-top: 12px">
+      <label>Mempool (pending transactions):</label>
+      <textarea id="mempool" rows="3" placeholder="Setiap transaksi di baris baru. Contoh: A -> B:10" readonly></textarea>
+    </div>
+
+    <div style="margin-top: 12px">
+      <button id="btn-mine-all">Mine Semua Transaksi</button>
+      <button id="btn-verify-consensus">Verify</button>
+      <button id="btn-consensus">Consensus</button>
+    </div>
+
+    <h3 style="margin-top: 20px; color:white;">Blockchain Tiap User (Distributed Ledger)</h3>
+    <div id="chains">
+      <h4 style="color:white;">Database User A</h4>
+      <div id="chain-A" class="chain-row"></div>
+      <h4 style="color:white;">Database User B</h4>
+      <div id="chain-B" class="chain-row"></div>
+      <h4 style="color:white;">Database User C</h4>
+      <div id="chain-C" class="chain-row"></div>
     </div>
   </div>
 
